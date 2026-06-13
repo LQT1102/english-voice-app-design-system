@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import Introductions from './components/Introductions';
 import ComponentDirectory from './components/ComponentDirectory';
 import ColorPalette from './components/ColorPalette';
@@ -16,6 +17,10 @@ import StandardUIElements from './components/StandardUIElements';
 import VoiceSandbox from './components/VoiceSandbox';
 import LiveVoiceScreenSpec from './components/LiveVoiceScreenSpec';
 import DeveloperExporter from './components/DeveloperExporter';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import EmailConfirmPage from './pages/EmailConfirmPage';
 
 import { 
   Sparkles, 
@@ -34,7 +39,11 @@ import {
   ChevronDown,
   ChevronUp,
   FileDown,
-  MessageCircle
+  MessageCircle,
+  LogIn,
+  UserPlus,
+  KeyRound,
+  MailCheck
 } from 'lucide-react';
 
 export default function App() {
@@ -55,6 +64,14 @@ export default function App() {
     { id: 'liveVoice', label: '10. Phòng Gọi Live Voice', icon: MessageCircle, target: 'live-voice-sec' },
     { id: 'sandbox', label: '11. Sân Chơi Thử Nghiệm', icon: MessageSquareCode, target: 'sandbox-section' },
     { id: 'exporter', label: '12. Xuất Bản Tài Liệu', icon: FileDown, target: 'exporter-section' },
+    { id: 'auth', label: '13. Trang Xác Thực', icon: ShieldAlert, target: 'auth-pages-section' },
+  ];
+
+  const authPages = [
+    { path: '/login', label: 'Đăng Nhập', icon: LogIn, desc: 'Email + mật khẩu, show/hide password, trạng thái loading' },
+    { path: '/register', label: 'Đăng Ký', icon: UserPlus, desc: 'Form đầy đủ, kiểm tra độ mạnh mật khẩu' },
+    { path: '/forgot-password', label: 'Quên Mật Khẩu', icon: KeyRound, desc: 'Gửi link reset qua email' },
+    { path: '/email-confirm', label: 'Xác Nhận Email', icon: MailCheck, desc: 'Hướng dẫn 3 bước + gửi lại email' },
   ];
 
   const handleScrollTo = (targetId: string, tabId: string) => {
@@ -88,6 +105,12 @@ export default function App() {
   }, []);
 
   return (
+    <Routes>
+      <Route path="/login" element={<LoginPage isDark={isDark} />} />
+      <Route path="/register" element={<RegisterPage isDark={isDark} />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage isDark={isDark} />} />
+      <Route path="/email-confirm" element={<EmailConfirmPage isDark={isDark} />} />
+      <Route path="*" element={
     <div className={`min-h-screen font-sans antialiased selection:bg-indigo-100 selection:text-indigo-900 pb-16 transition-colors duration-500 ${
       isDark ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'
     }`}>
@@ -229,10 +252,62 @@ export default function App() {
             <VoiceSandbox isDark={isDark} />
             <LiveVoiceScreenSpec isDark={isDark} />
             <DeveloperExporter isDark={isDark} />
+
+            {/* AUTH PAGES SECTION */}
+            <div id="auth-pages-section" className={`p-8 rounded-3xl border transition-all duration-500 hover:shadow-sm ${isDark ? 'bg-slate-900 border-slate-800 text-slate-100 shadow-md shadow-indigo-950/10' : 'bg-white border-slate-200 text-slate-850 shadow-xs'}`}>
+              <div className={`flex items-center gap-3.5 mb-6 border-b pb-4 transition-colors duration-500 ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors duration-500 ${isDark ? 'bg-indigo-950/40 text-indigo-400' : 'bg-indigo-100 text-indigo-600'}`}>
+                  <ShieldAlert className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-indigo-500 font-extrabold uppercase tracking-wide">13 Auth Screens</span>
+                  <h2 className={`text-xl font-black uppercase transition-colors duration-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>Trang Xác Thực (Auth Pages)</h2>
+                </div>
+              </div>
+
+              <p className={`text-sm mb-6 leading-relaxed font-semibold transition-colors duration-500 ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+                Bộ 4 trang xác thực độc lập: đăng nhập, đăng ký, quên mật khẩu, và xác nhận email. Mỗi trang được tách biệt tại route riêng, đồng bộ Dark/Light mode với toàn bộ design system.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {authPages.map((page) => {
+                  const Icon = page.icon;
+                  return (
+                    <Link
+                      key={page.path}
+                      to={page.path}
+                      className={`group flex items-start gap-4 p-5 rounded-2xl border transition-all duration-200 hover:border-indigo-400 hover:shadow-sm active:scale-95 ${
+                        isDark ? 'bg-slate-950/60 border-slate-800 hover:bg-slate-950' : 'bg-slate-50 border-slate-100 hover:bg-white'
+                      }`}
+                    >
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-200 group-hover:bg-indigo-600 group-hover:text-white ${
+                        isDark ? 'bg-indigo-950/60 text-indigo-400 border border-indigo-900/60' : 'bg-indigo-100 text-indigo-600'
+                      }`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className={`font-black text-sm uppercase mb-0.5 transition-colors duration-200 group-hover:text-indigo-500 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                          {page.label}
+                        </h3>
+                        <p className={`text-xs font-semibold leading-relaxed ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
+                          {page.desc}
+                        </p>
+                        <span className={`inline-flex items-center gap-1 mt-2 text-[10px] font-black font-mono uppercase ${isDark ? 'text-indigo-500' : 'text-indigo-500'}`}>
+                          Xem trang <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
           </main>
 
         </div>
       </div>
     </div>
+      } />
+    </Routes>
   );
 }
