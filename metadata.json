@@ -1,0 +1,6 @@
+{
+  "name": "English Voice App Design System",
+  "description": "Interactive design system and components for a real-time voice-interactive English learning application.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
