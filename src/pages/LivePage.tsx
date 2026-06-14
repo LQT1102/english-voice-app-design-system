@@ -162,6 +162,13 @@ export default function LivePage() {
   const [selectedMessage, setSelectedMessage] = useState<ChatMessage | null>(null);
   const [showNewBadge, setShowNewBadge] = useState(false);
 
+  // Conversation settings
+  const [showSettings, setShowSettings] = useState(false);
+  const [level, setLevel] = useState(LEVEL);
+  const [systemPrompt, setSystemPrompt] = useState(
+    'Bạn là một barista thân thiện tại quán cà phê. Hãy trò chuyện tự nhiên, giữ câu ngắn gọn và sửa nhẹ nhàng khi học viên mắc lỗi.',
+  );
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
