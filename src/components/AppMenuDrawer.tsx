@@ -16,6 +16,7 @@ import {
   Sun,
   Moon,
   ChevronRight,
+  Radio,
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -32,6 +33,12 @@ const navLinks: NavLink[] = [
     label: 'Design System',
     description: 'Bản đặc tả components Bento Spec Sheet',
     icon: LayoutGrid,
+  },
+  {
+    to: '/live',
+    label: 'Phòng luyện nói',
+    description: 'Giao diện Live Voice Sandbox thời gian thực',
+    icon: Radio,
   },
   {
     to: '/login',
@@ -83,6 +90,9 @@ export default function AppMenuDrawer() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  // The live room has its own header navigation, so hide the global menu there
+  if (location.pathname === '/live') return null;
 
   return (
     <>
